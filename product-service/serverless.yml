@@ -30,6 +30,9 @@ provider:
   httpApi:
     cors: true
 
+  iamManagedPolicies:
+    - "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+
 # you can add statements to the Lambda function's IAM Role here
 #  iam:
 #    role:
@@ -62,7 +65,7 @@ provider:
 
 functions:
   getProductsList:
-    handler: handler.getProductsList
+    handler: getProductsListHandler.getProductsList
     events:
       # - httpApi: "GET /products"
       - httpApi:
@@ -70,11 +73,17 @@ functions:
           method: get
 
   getProductsById:
-    handler: handler.getProductsById
+    handler: getProductByIdHandler.getProductsById
     events:
       - httpApi:
           path: /products/{productId}
           method: get
+  createProduct:
+    handler: createProductHandler.createProduct
+    events:
+      - httpApi:
+          path: /products
+          method: post
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
